@@ -27,5 +27,15 @@ class Card:
 
     def __repr__(self):
         return f"A {self.name} of {self.suit}, worth {self.value}"
-    
 
+
+cardList = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"]
+valueList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+suitList = ["Spades", "Diamonds", "Hearts", "Clubs"]
+cardCatalogue = []
+for card in cardList:
+    value = valueList[cardList.index(card)]
+    for suit in suitList:
+        thisCard = Card(card, suit, value)
+        cardCatalogue.append(thisCard)
+print(cardCatalogue)
