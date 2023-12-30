@@ -58,6 +58,7 @@ def get_wager():
 
 def shuffle_cards():
     cardDeck.extend(discardDeck)
+    discardDeck.clear()
     shuffleAmount = 150
     for i in range(shuffleAmount):
         cardPosition = random.randrange(0,50)
@@ -76,7 +77,7 @@ def draw_player_card(thisPlayer):
 def show_players_cards(thisPlayer):
     print(f"{thisPlayer.name} has these cards:")
     for card in thisPlayer.cards:
-        print(f"{thisPlayer.card}")
+        print(f"{card}")
 
 def get_player_move():
     print("Would you like to (S)tay or (H)it???  ")
@@ -174,6 +175,15 @@ dealer = Player("The Dealer", startingMoney, [], 0)
 while player.money > 0 and player.money < 2000:
     gameResult = play_game()
     return_cards_to_deck()
-
-
+if player.money <= 0:
+    print(f"YOU ARE OUT OF MONEY")
+    print("*********************")
+    print("*****  YOU LOSE *****")
+    print("*********************")
+elif player.money >= 2000:
+    
+    print(f"YOU WON ALL THE MONEY")
+    print("**********************")
+    print("******  YOU WIN ******")
+    print("**********************")
 
