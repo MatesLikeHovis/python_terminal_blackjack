@@ -64,18 +64,19 @@ def shuffle_cards():
         cardPosition = random.randrange(0,50)
         cardDeck.insert(cardPosition, cardDeck.pop())
 
-def draw_player_card(thisPlayer):
+def draw_player_card(thisPlayer, showCardFlag = True):
     newCard = cardDeck.pop()
     if newCard.name=="Ace" and thisPlayer.value <= 10:
         newCard.value = 11
     elif (newCard.name=="Ace"):
         newCard.value = 1
     thisPlayer.cardValue += newCard.value
-    print(f"{thisPlayer.name} has drawn {newCard}")
+    if showCardFlag:
+        print(f"{thisPlayer.name} has drawn {newCard}")
     thisPlayer.cards.append(newCard)
 
 def show_players_cards(thisPlayer):
-    print(f"{thisPlayer.name} has these cards:")
+    print(f"{thisPlayer.name} has these cards, worth {thisPlayer.cardValue}:")
     for card in thisPlayer.cards:
         print(f"{card}")
 
@@ -107,12 +108,12 @@ def play_game():
     print("Drawing Cards")
     stayflag = False
     draw_player_card(player)
-    draw_player_card(dealer)
+    draw_player_card(dealer, False)
     draw_player_card(player)
-    draw_player_card(dealer)
+    draw_player_card(dealer, False)
     while not stayflag:
         show_players_cards(player)
-        move = get_player_move
+        move = get_player_move()
         if move == "S":
             stayflag = True
         else:
@@ -174,6 +175,8 @@ player = Player(playerName, startingMoney, [], 0)
 dealer = Player("The Dealer", startingMoney, [], 0)
 while player.money > 0 and player.money < 2000:
     gameResult = play_game()
+    player.money += gameResult
+    dealer.money -= gameResult
     return_cards_to_deck()
 if player.money <= 0:
     print(f"YOU ARE OUT OF MONEY")
