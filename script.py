@@ -100,6 +100,8 @@ def return_cards_to_deck():
         discardDeck.append(player.cards.pop())
     for card in dealer.cards:
         discardDeck.append(dealer.cards.pop())
+    player.cardValue = 0
+    dealer.cardValue = 0
 
 #THIS IS THE GAMEPLAY LOOP CALLED BELOW:
 def play_game():
