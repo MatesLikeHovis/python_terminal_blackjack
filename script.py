@@ -57,8 +57,8 @@ def get_wager():
     return int(bet)
 
 def shuffle_cards():
-    cardDeck.extend(discardDeck)
-    discardDeck.clear()
+    for card in discardDeck:
+        cardDeck.append(discardDeck.pop())
     shuffleAmount = 150
     for i in range(shuffleAmount):
         cardPosition = random.randrange(0,50)
@@ -66,7 +66,7 @@ def shuffle_cards():
 
 def draw_player_card(thisPlayer, showCardFlag = True):
     newCard = cardDeck.pop()
-    if newCard.name=="Ace" and thisPlayer.value <= 10:
+    if newCard.name=="Ace" and thisPlayer.cardValue <= 10:
         newCard.value = 11
     elif (newCard.name=="Ace"):
         newCard.value = 1
