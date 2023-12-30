@@ -1,5 +1,9 @@
 import random
 
+# CLASSES
+#
+#
+
 class Player:
     def __init__(self, name, money, cards, cardValue):
         self.name = name
@@ -29,6 +33,10 @@ class Card:
     def __repr__(self):
         return f"A {self.name} of {self.suit}, worth {self.value}"
 
+# GAMEPLAY FUNCTIONS
+#
+#
+
 def get_wager():
     print(f"{player.name}, you currently have ${player.money}.")
     bet = input("Please type the amount you wish to bet:  ")
@@ -39,6 +47,12 @@ def get_wager():
         return get_wager()
     if (int(bet) > maximumBet or int(bet) < minimumBet):
         print(f"You must wager between ${minimumBet} and ${maximumBet}.")
+        return get_wager()
+    if (int(bet) > player.money):
+        print(f"You only have ${player.money} - you cannot bet above this amount.")
+        return get_wager()
+    if (int(bet) > dealer.money):
+        print(f"The dealer only has ${dealer.money} - you cannot exceed this amount.")
         return get_wager()
     return int(bet)
 
@@ -79,6 +93,13 @@ def check_for_aces(thisPlayer):
             card.value = 1
             thisPlayer.cardValue -= 10
 
+def return_cards_to_deck():
+    for card in player.cards:
+        discardDeck.append(player.cards.pop())
+    for card in dealer.cards:
+        discardDeck.append(dealer.cards.pop())
+
+#THIS IS THE GAMEPLAY LOOP CALLED BELOW:
 def play_game():
     bet = get_wager()
     shuffle_cards()
@@ -107,13 +128,25 @@ def play_game():
     show_players_cards(dealer)
     while dealer.cardValue <= 16:
         print(f"Dealer holds {dealer.cardValue} and hits:")
-
-
-    
-        
-    
-    
-    
+        draw_player_card(dealer)
+    if dealer.cardValue > 21:
+        print("Dealer Busts!!! Player Wins")
+        return bet
+    elif dealer.cardValue > player.cardValue:
+        print(f"Dealer's {dealer.cardValue} beats Player's {player.cardValue}")
+        print("Dealer Wins.")
+        bet *= -1
+        print(f"Player Loses ${bet}")
+        return bet
+    elif dealer.cardValue == player.cardValue:
+        print("Push!!!!")
+        print("Player does not win or lose.")
+        return 0
+    else:
+        print(f"Player's {player.cardValue} beats Dealer's {dealer.cardValue}")
+        print("Player Wins.")
+        print(f"Player Wins {bet}")
+        return bet
 
 
 cardList = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"]
@@ -127,17 +160,20 @@ for card in cardList:
         thisCard = Card(card, suit, value)
         cardDeck.append(thisCard)
 
+
+#Actual Gameplay begins here:
+        
 startingMoney = 1000
 maximumBet = 100
 minimumBet = 10
-
-
 print("Welcome to Python Blackjack.")
 print("Please input your name!: ")
 playerName = input("")
 player = Player(playerName, startingMoney, [], 0)
 dealer = Player("The Dealer", startingMoney, [], 0)
+while player.money > 0 and player.money < 2000:
+    gameResult = play_game()
+    return_cards_to_deck()
 
-play_game()
 
 
